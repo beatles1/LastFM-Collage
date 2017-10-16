@@ -46,7 +46,7 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 
 	$imgfilename = basename($imgurl);
 	$temp = false;
-	if ($enableCache && file_exists($imgfilename)) {
+	if ($enableCache && file_exists('cache/'. $imgfilename)) {
 		$temp = imagecreatefrompng('cache/'. $imgfilename);	// Load from cache
 	} else {
 		$temp = imagecreatefrompng($imgurl);	// Download the Image
