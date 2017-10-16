@@ -53,7 +53,7 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 		$temp = imagecreatefrompng($imgurl);	// Download the Image
 		if ($enableCache) imagepng($temp, $cacheLocation .'/'. $imgfilename);
 	}
-	if (!$temp) die("Failed to load album art: $key");
+	if (!$temp) continue;
 
 	imagecopy($canvas, $temp, $x, $y, 0, 0, $artW, $artH);	// Put image onto canvas
 	imagedestroy($temp);
@@ -67,6 +67,9 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 	$done++;	// Increase count of images added
 	if ($done >= $totalC) break;
 }
+
+if ($done === 0) die('No image art could be loaded!');
+
 
 //$black = imagecolorallocate($canvas, 255, 255, 255);
 //imagestring($canvas, 3, 5, 5, time()-$start, $black);
