@@ -5,7 +5,7 @@
 
 //$start = time();
 
-$apikey = 'APIKEY';
+$apikey = 'YOUR_API_KEY';
 
 $username = 'edwardbowden';
 $period = '7day';	// "overall" || "12month" || "6month" || "3month" || "1month" || "7day"
