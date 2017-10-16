@@ -44,7 +44,7 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 	if (!$imgurl) continue;
 	$imgurl = str_replace('300x300', $artW .'x'. $artH, $imgurl);	// Get the right image URL or skip if no image available
 
-	$imgfilename = $artW .'x'. $artH . basename($imgurl);
+	$imgfilename = $artW .'x'. $artH . '-'. basename($imgurl);
 	$temp = false;
 	if ($enableCache && file_exists('cache/'. $imgfilename)) {
 		$temp = imagecreatefrompng('cache/'. $imgfilename);	// Load from cache
