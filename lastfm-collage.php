@@ -7,6 +7,8 @@
 
 $apikey = 'YOUR_API_KEY';
 
+$enableCache = True;
+
 $username = 'edwardbowden';
 $period = '7day';	// "overall" || "12month" || "6month" || "3month" || "1month" || "7day"
 
@@ -27,6 +29,10 @@ $albums = json_decode($albums);
 
 if (!$albums) die("Could not load albums. Check config.");
 
+if ($enableCache && (!file_exists('cache') && !is_dir('cache'))) {	// Create cache folder if required and doesn't exist
+	mkdir('cache');
+}
+
 $canvas = imagecreatetruecolor($artW*$artHC, $artH*$artVC);
 
 $x = 0;
@@ -38,7 +44,14 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 	if (!$imgurl) continue;
 	$imgurl = str_replace('300x300', $artW .'x'. $artH, $imgurl);	// Get the right image URL or skip if no image available
 
-	$temp = imagecreatefrompng($imgurl);	// Download the Image
+	$imgfilename = basename($imgurl);
+	$temp = false;
+	if ($enableCache && file_exists($imgfilename)) {
+		$temp = imagecreatefrompng('cache/'. $imgfilename);	// Load from cache
+	} else {
+		$temp = imagecreatefrompng($imgurl);	// Download the Image
+		if ($enableCache) imagepng($temp, 'cache/'. $imgfilename);
+	}
 	if (!$temp) die("Failed to load album art: $key");
 
 	imagecopy($canvas, $temp, $x, $y, 0, 0, $artW, $artH);	// Put image onto canvas
