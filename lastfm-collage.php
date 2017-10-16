@@ -8,6 +8,7 @@
 $apikey = 'YOUR_API_KEY';
 
 $enableCache = True;
+$cacheLocation = 'cache';	// Mo trailing slash plz
 
 $username = 'edwardbowden';
 $period = '7day';	// "overall" || "12month" || "6month" || "3month" || "1month" || "7day"
@@ -46,11 +47,11 @@ foreach($albums->topalbums->album as $key => $album) {	// For every album
 
 	$imgfilename = $artW .'x'. $artH . '-'. basename($imgurl);
 	$temp = false;
-	if ($enableCache && file_exists('cache/'. $imgfilename)) {
-		$temp = imagecreatefrompng('cache/'. $imgfilename);	// Load from cache
+	if ($enableCache && file_exists($cacheLocation .'/'. $imgfilename)) {
+		$temp = imagecreatefrompng($cacheLocation .'/'. $imgfilename);	// Load from cache
 	} else {
 		$temp = imagecreatefrompng($imgurl);	// Download the Image
-		if ($enableCache) imagepng($temp, 'cache/'. $imgfilename);
+		if ($enableCache) imagepng($temp, $cacheLocation .'/'. $imgfilename);
 	}
 	if (!$temp) die("Failed to load album art: $key");
 
