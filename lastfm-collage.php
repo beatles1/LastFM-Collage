@@ -33,20 +33,24 @@ $x = 0;
 $y = 0;
 
 $done = 0;
-foreach($albums->topalbums->album as $key => $album) {
+foreach($albums->topalbums->album as $key => $album) {	// For every album
 	$imgurl = $album->image[3]->{"#text"};
 	if (!$imgurl) continue;
-	$imgurl = str_replace('300x300', $artW .'x'. $artH, $imgurl);
-	$temp = imagecreatefrompng($imgurl);
+	$imgurl = str_replace('300x300', $artW .'x'. $artH, $imgurl);	// Get the right image URL or skip if no image available
+
+	$temp = imagecreatefrompng($imgurl);	// Download the Image
 	if (!$temp) die("Failed to load album art: $key");
-	imagecopy($canvas, $temp, $x, $y, 0, 0, $artW, $artH);
+
+	imagecopy($canvas, $temp, $x, $y, 0, 0, $artW, $artH);	// Put image onto canvas
 	imagedestroy($temp);
-	$x += $artW;
+
+	$x += $artW;	// Update x and y values
 	if ($x >= ($artW*$artHC)) {
 		$x = 0;
 		$y += $artH;
 	}
-	$done++;
+
+	$done++;	// Increase count of images added
 	if ($done >= $totalC) break;
 }
 
